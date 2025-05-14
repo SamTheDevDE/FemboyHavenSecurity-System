@@ -15,11 +15,19 @@ write("Password: ")
 local password = read("*")  -- hides password input
 
 -- Send auth request
-rednet.send(0, {
+local serverID = rednet.lookup("security", "main_server")
+if not serverID then
+    print("Failed to find server.")
+    return
+end
+
+-- Send auth request to discovered server
+rednet.send(serverID, {
     type = "auth",
     username = username,
     password = password
 }, channel)
+
 
 -- Wait for response
 local senderID, response = rednet.receive(channel, 5)

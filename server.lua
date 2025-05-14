@@ -6,7 +6,8 @@ local users = {
 
 local channel = 958  -- you can change this, just match on client
 
-rednet.open("back")  -- change "back" to the modem side
+rednet.open("top")  -- change "back" to the modem side
+rednet.host("security", "main_server")
 
 print("Security Server is online.")
 
