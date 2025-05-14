@@ -1,6 +1,8 @@
 -- door_terminal.lua
 
-local channel = 958  -- must match server
+local protocol = "security"
+local hostname = "main_server"
+local serverID = rednet.lookup(protocol, hostname)
 local side = "back"  -- side with the modem
 local doorSide = "left"  -- side where redstone controls the door
 
@@ -15,18 +17,17 @@ write("Password: ")
 local password = read("*")  -- hides password input
 
 -- Send auth request
-local serverID = rednet.lookup("security", "main_server")
 if not serverID then
-    print("Failed to find server.")
+    print("Failed to find security server.")
     return
 end
 
--- Send auth request to discovered server
+-- Send auth request with correct protocol
 rednet.send(serverID, {
     type = "auth",
     username = username,
     password = password
-}, channel)
+}, protocol)
 
 
 -- Wait for response
